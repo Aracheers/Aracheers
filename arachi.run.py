@@ -1,0 +1,145 @@
+import discord
+import random
+from discord.ext import commands
+
+client = commands.Bot('!!')
+
+@client.command()
+async def say(ctx,*, arg):
+    await ctx.send(arg)
+
+@client.listen('on_message')
+async def on_message(message):
+    # 自分以外のユーザに返信
+    if message.author == client.user or message.author.bot:
+        return
+
+    #挨拶
+    if message.content.startswith('こんにちは'):
+        msg = 'こんにちは！{0}さん'.format(message.author.display_name)
+        await message.channel.send(msg)
+
+    if message.content.startswith('おやすみ'):
+        night = [ 'おやすみなさい。\n明日もよい一日でありますように…', 'おやすみなさい\n一日、お疲れ様でした']
+        await message.channel.send(random.choice(night))
+
+    if message.content.startswith('おはよう'):
+        day = ['おはようございます。\n今日も一日がんばりましょう！', 'おはようございます。\nご飯は摂られましたか？']
+        await message.channel.send(random.choice(day))
+        
+    #ヘルプコマンド
+    if message.content.startswith('!!help'):
+        embed = discord.Embed(title='**Help Menu**',
+        description='全体でコマンド改良中\n基本的な会話、挨拶に反応します。\nPrefixは**!!**に設定されています。',colour=0x2ea9ff)
+        embed.add_field(name='Commands',
+        value='**!!invite**で招待リンクを所得出来ます。\n**!!server**でサーバー情報を取得できます。\n挨拶に反応します。話しかけてみて下さい！')
+        await message.channel.send(embed=embed)
+
+    #更新情報表示
+    if message.content.startswith('!!update'):
+        embed = discord.Embed(title='**Recent Updates**',description='CommandBot化しました。\n24H起動の準備中です。',colour=0x2ea9ff)
+        embed.add_field(name='version',value='α版(試験運用段階)')
+        await message.channel.send(embed=embed)
+
+    #招待リンク取得用
+    if message.content.startswith('!!invite'):
+        embed = discord.Embed(title='**Invite Link**',
+        description='[このBotの招待リンク](https://discordapp.com/api/oauth2/authorize?client_id=478914225062805504&permissions=2146954743&scope=bot)',colour=0x2ea9ff)
+        embed.add_field(name='※注意',value='導入をお考えのサーバーの管理者権限が必要です。\n権限は必要に応じて調整して下さい。\n[このBotのサポートサーバー](https://discord.gg/wdhCCJD)')
+        await message.channel.send(embed=embed)
+    
+    #ユーザ認証
+    if message.content.startswith('!replay'):
+        if message.author.id == 441157692464300032:
+            await message.channel.send('Yes')
+        else:
+            await message.channel.send('No')
+
+    #DMで!ch <チャンネルID> を打った後、DMで言った内容を発言させるプログラム
+    global channel
+    if isinstance(message.channel,discord.DMChannel) and message.author.id == 441157692464300032:
+        if message.content.startswith('!set'):
+             split = message.content.split()
+             channel = client.get_channel(int(split[1]))
+             await message.channel.send('{0}に設定しました。'.format(channel.mention))
+        else: 
+             await channel.send(message.content)
+
+    #ランダムモジュール動作確認用
+    if message.content.startswith('フルーツ'):
+        fruit = ['りんご', 'バナナ', 'メロン','ぶどう']
+        await message.channel.send(random.choice(fruit))
+
+    #メッセージ削除
+    if message.content == ('!!delete.test'):
+        await message.delete()
+
+    #役職付与 誰でも出来ちゃう版
+    if message.content.startswith('!!add_test'):
+            role = message.guild.get_role(502531768268619778)
+            await message.author.add_roles(role)
+            await message.channel.send('付与しました。')
+
+    if message.content.startswith('!!Add_sp'):
+        await  message.author.add_roles(message.guild.get_role(494852513908916226))
+
+    #役職付与 付与者制限有
+    splietd = message.content.split()
+    if splietd[0] == '!!staff':
+        member = message.author
+        role = message.guild.get_role(465890968957354023)
+        if role in member.roles:
+            member = message.guild.get_member(int(splietd[1]))
+            role = message.guild.get_role(502548685457063936)
+            await member.add_roles(role)
+            await message.channel.send('付与しました。')
+
+# サーバステータス表示
+@client.command()
+async def server(ctx):
+    guild = ctx.guild
+    description = '''
+    サーバー名称:{0.name}
+    サーバー所有者:{0.owner.mention}
+    サーバー人数:{0.member_count}人
+    チャンネル数:{1}個
+    サーバー作成日:{0.created_at}
+    Server_ID:{0.id}
+    '''.format(guild, len(guild.channels))
+    embed = discord.Embed(title='サーバー情報', description=description,colour=0x2ea9ff)
+    embed.set_thumbnail(url=guild.icon_url)
+    await ctx.send(embed=embed)
+
+#入退出メッセージ
+@client.event
+async def on_member_join(member):
+    if 'discord.gg' in member.display_name:
+        await member.ban(reason='招待リンクが名前に含まれている為BANされました。'
+        ,delete_message_days=1)
+    name = member.display_name
+    embed = discord.Embed(title='{0}さんが参加しました。'.format(name),colour=0x2ea9ff,description=
+    'ようこそ{0}さん\nよろしくお願いします！\nこのサーバーの現在の人数は{1}人です。'.format(name,member.guild.member_count))
+    embed.set_thumbnail(url=member.avatar_url)
+    channel = next(c for c in member.guild.channels if c.name == 'general-chat')
+    await channel.send(embed=embed)
+
+@client.event
+async def on_member_remove(member):
+    name = member.display_name
+    embed = discord.Embed(title='{0}さんが退出しました。'.format(name),
+     colour=0x2ea9ff, description='{0}さん、ご利用ありがとうございました。\nこのサーバーの現在の人数は{1}人です'
+     .format(name, member.guild.member_count))
+    embed.set_thumbnail(url=member.avatar_url)
+    channel = next(c for c in member.guild.channels if c.name == 'general-chat')
+    await channel.send(embed=embed)
+
+
+@client.event
+async def on_ready():
+    print('起動が完了しました。')
+    await client.change_presence(activity=discord.Game(name="α版試験運用｜!!help",type=discord.ActivityType.playing))
+    print(client.user.name)
+    print(client.user.id)
+    print('------')
+
+client.run('NDc4OTE0MjI1MDYyODA1NTA0.DlRnzQ.4V6U4ebJGnDIIwlnyNnyPOtZ96g')
