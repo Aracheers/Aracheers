@@ -99,7 +99,7 @@ async def on_message(message):
         await  message.author.add_roles(message.guild.get_role(494852513908916226))
     
     # user info
-    if message.content.startswith('!!ユーザ'):
+    if message.content.startswith('!!userinfo'):
         if(message.author.status == discord.Status.online):
             status = "オンライン"
         elif(message.author.status == discord.Status.offline or message.author.status == discord.Status.invisible):
@@ -113,11 +113,16 @@ async def on_message(message):
 
         # ニックネームの有無で分岐
         if(message.author.nick != None):
-            await message.channel.send('名前: ' + message.author.name + 'ニックネーム: ' + message.author.nick + 
-            'アカウント作成: ' + str(message.author.created_at) + 'サーバ参加: ' + str(message.author.joined_at) + 'ステータス: ' + status)
+            embed = discord.Embed(title='Userinfo',
+            description='名前: ' + message.author.name + '\nニックネーム: ' + message.author.nick + 
+            '\nアカウント作成日: ' + str(message.author.created_at) + '\nサーバ参加日: ' + str(message.author.joined_at) + '\n現在のステータス: ' + status,
+            colour=0x2ea9ff)
         else:
-            await message.channel.send('名前: ' + message.author.name + 'アカウント作成: ' + str(message.author.created_at) +
-            'サーバ参加: ' + str(message.author.joined_at) + 'ステータス: ' + status)
+            embed = discord.Embed(title='Userinfo',
+            description='名前: ' + message.author.name + '\nアカウント作成日: ' + str(message.author.created_at) +
+            '\nサーバ参加日: ' + str(message.author.joined_at) + '\n現在のステータス: ' + status
+            ,colour=0x2ea9ff)
+        await message.channel.send(embed=embed)
 
 
 
