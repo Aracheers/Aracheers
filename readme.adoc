@@ -1,3 +1,19 @@
-:icons: font
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:status:
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
 
-WARNING: pyYamlを使用しています。
+# readme
+
+WARNING: pyYamlを使用しています。インストールしておいてください。
+
+## ディレクトリ構造
+
+. src pythonのソースコードを格納
+. js node.jsのソースコードを格納
