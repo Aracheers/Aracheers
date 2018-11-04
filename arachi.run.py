@@ -84,7 +84,7 @@ async def on_message(message):
         await  message.author.add_roles(message.guild.get_role(494852513908916226))
     
     # user info
-    if message.content.startswith('!!user'):
+    if message.content.startswith('!!ユーザ'):
         await message.channel.send('名前: ' + message.author.name)
         if(message.author.nick != None):
             await message.channel.send('ニックネーム: ' + message.author.nick)
