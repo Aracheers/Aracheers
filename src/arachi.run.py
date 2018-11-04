@@ -1,11 +1,18 @@
 import discord
 import random
 from discord.ext import commands
+from discord.ext.commands import CommandNotFound
 import yaml
 
 client = commands.Bot('!!')
 
 YML_DATA = './../data/data.yml'
+
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, CommandNotFound):
+        return
+    raise error
 
 @client.command()
 async def say(ctx,*, arg):
