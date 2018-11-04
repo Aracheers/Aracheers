@@ -82,6 +82,29 @@ async def on_message(message):
 
     if message.content.startswith('!!Add_sp'):
         await  message.author.add_roles(message.guild.get_role(494852513908916226))
+    
+    # user info
+    if message.content.startswith('!!ユーザ'):
+        if(message.author.status == discord.Status.online):
+            status = "オンライン"
+        elif(message.author.status == discord.Status.offline or message.author.status == discord.Status.invisible):
+            status = "オフライン"
+        elif(message.author.status == discord.Status.dnd or message.author.status == discord.Status.do_not_disturb):
+            status = "起こさないで"
+        elif(message.author.status == discord.Status.idle):
+            status = "退席中"
+        else:
+            status = "その他"
+
+        # ニックネームの有無で分岐
+        if(message.author.nick != None):
+            await message.channel.send('名前: ' + message.author.name + 'ニックネーム: ' + message.author.nick + 
+            'アカウント作成: ' + str(message.author.created_at) + 'サーバ参加: ' + str(message.author.joined_at) + 'ステータス: ' + status)
+        else:
+            await message.channel.send('名前: ' + message.author.name + 'アカウント作成: ' + str(message.author.created_at) +
+            'サーバ参加: ' + str(message.author.joined_at) + 'ステータス: ' + status)
+
+
 
     #役職付与 付与者制限有
     splietd = message.content.split()
