@@ -85,12 +85,24 @@ async def on_message(message):
     
     # user info
     if message.content.startswith('!!ユーザ'):
-        await message.channel.send('名前: ' + message.author.name)
+        if(message.author.status == discord.Status.online):
+            status = "オンライン"
+        elif(message.author.status == discord.Status.offline or message.author.status == discord.Status.invisible):
+            status = "オフライン"
+        elif(message.author.status == discord.Status.dnd or message.author.status == discord.Status.do_not_disturb):
+            status = "起こさないで"
+        elif(message.author.status == discord.Status.idle):
+            status = "退席中"
+        else:
+            status = "その他"
+
+        # ニックネームの有無で分岐
         if(message.author.nick != None):
-            await message.channel.send('ニックネーム: ' + message.author.nick)
-        await message.channel.send('アカウント作成: ' + str(message.author.created_at))
-        await message.channel.send('サーバ参加: ' + str(message.author.joined_at))
-        await message.channel.send('ステータス: ' + str(message.author.status))
+            await message.channel.send('名前: ' + message.author.name + 'ニックネーム: ' + message.author.nick + 
+            'アカウント作成: ' + str(message.author.created_at) + 'サーバ参加: ' + str(message.author.joined_at) + 'ステータス: ' + status)
+        else:
+            await message.channel.send('名前: ' + message.author.name + 'アカウント作成: ' + str(message.author.created_at) +
+            'サーバ参加: ' + str(message.author.joined_at) + 'ステータス: ' + status)
 
 
 
