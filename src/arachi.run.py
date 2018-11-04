@@ -1,8 +1,11 @@
 import discord
 import random
 from discord.ext import commands
+import yaml
 
 client = commands.Bot('!!')
+
+YML_DATA = './../data/data.yml'
 
 @client.command()
 async def say(ctx,*, arg):
@@ -10,6 +13,11 @@ async def say(ctx,*, arg):
 
 @client.listen('on_message')
 async def on_message(message):
+    
+    with open(YML_DATA) as stream:
+        data = yaml.load(stream)
+        user = data["user"]
+
     # 自分以外のユーザに返信
     if message.author == client.user or message.author.bot:
         return
@@ -50,14 +58,14 @@ async def on_message(message):
     
     #ユーザ認証
     if message.content.startswith('!replay'):
-        if message.author.id == 441157692464300032:
+        if message.author.id == user:
             await message.channel.send('Yes')
         else:
             await message.channel.send('No')
 
     #DMで!ch <チャンネルID> を打った後、DMで言った内容を発言させるプログラム
     global channel
-    if isinstance(message.channel,discord.DMChannel) and message.author.id == 441157692464300032:
+    if isinstance(message.channel,discord.DMChannel) and message.author.id == user:
         if message.content.startswith('!set'):
              split = message.content.split()
              channel = client.get_channel(int(split[1]))
@@ -142,4 +150,9 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
-client.run('NDc4OTE0MjI1MDYyODA1NTA0.DlRnzQ.4V6U4ebJGnDIIwlnyNnyPOtZ96g')
+# 起動時
+f = open("./../data/data.yml", "r")
+token= yaml.load(f)
+f.close()
+
+client.run(token["token"])
