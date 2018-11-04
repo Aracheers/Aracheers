@@ -82,6 +82,17 @@ async def on_message(message):
 
     if message.content.startswith('!!Add_sp'):
         await  message.author.add_roles(message.guild.get_role(494852513908916226))
+    
+    # user info
+    if message.content.startswith('!!user'):
+        await message.channel.send('名前: ' + message.author.name)
+        if(message.author.nick != None):
+            await message.channel.send('ニックネーム: ' + message.author.nick)
+        await message.channel.send('アカウント作成: ' + str(message.author.created_at))
+        await message.channel.send('サーバ参加: ' + str(message.author.joined_at))
+        await message.channel.send('ステータス: ' + str(message.author.status))
+
+
 
     #役職付与 付与者制限有
     splietd = message.content.split()
