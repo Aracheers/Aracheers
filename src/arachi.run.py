@@ -199,6 +199,25 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
+    with open(YML_DATA) as stream:
+        data = yaml.load(stream)
+        greeting = data["greeting"]
+
+    loop = asyncio.get_event_loop()
+    client.loop.create_task(greeting_schedule(client.get_channel(greeting),loop))
+
+# あいさつする関数
+async def on_greeting(channel):
+    embed = discord.Embed(title='おはようございます。',colour=0x2ea9ff)
+    await channel.send(embed=embed)
+
+# 挨拶を実行する
+@asyncio.coroutine
+async def greeting_schedule(channel, loop):
+    while True:
+        if time.strftime('%H:%M:%S',time.localtime())=='6:00:00':
+            await on_greeting(channel)
+
 # 起動時
 f = open("./../data/data.yml", "r")
 token= yaml.load(f)
