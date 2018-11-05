@@ -114,12 +114,12 @@ async def on_message(message):
         # ニックネームの有無で分岐
         if(message.author.nick != None):
             embed = discord.Embed(title='Userinfo',
-            description='名前: ' + message.author.name + '\nニックネーム: ' + message.author.nick + 
+            description='名前: ' + message.author.mention + '\nニックネーム: ' + message.author.nick + 
             '\nアカウント作成日: ' + str(message.author.created_at) + '\nサーバ参加日: ' + str(message.author.joined_at) + '\n現在のステータス: ' + status,
             colour=0x2ea9ff)
         else:
             embed = discord.Embed(title='Userinfo',
-            description='名前: ' + message.author.name + '\nアカウント作成日: ' + str(message.author.created_at) +
+            description='名前: ' + message.author.mention + '\nアカウント作成日: ' + str(message.author.created_at) +
             '\nサーバ参加日: ' + str(message.author.joined_at) + '\n現在のステータス: ' + status
             ,colour=0x2ea9ff)
         await message.channel.send(embed=embed)
