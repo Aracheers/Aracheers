@@ -153,6 +153,12 @@ async def server(ctx):
     embed.set_thumbnail(url=guild.icon_url)
     await ctx.send(embed=embed)
 
+#BANコマンド
+@client.command()
+async def ban(ctx, member: discord.Member):
+    await member.ban()
+    await ctx.send('BANしました。')
+
 #入退出メッセージ
 @client.event
 async def on_member_join(member):
