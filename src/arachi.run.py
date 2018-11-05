@@ -191,7 +191,8 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
-    client.loop.create_task(on_greeting(client.get_channel(507552110900936711)))
+    loop = asyncio.get_event_loop()
+    client.loop.create_task(greeting_schedule(client.get_channel(507552110900936711),loop))
 
 # あいさつする関数
 async def on_greeting(channel):
@@ -201,9 +202,9 @@ async def on_greeting(channel):
 
 # 挨拶を実行する
 @asyncio.coroutine
-async def greeting_schedule(channel):
+async def greeting_schedule(channel, loop):
     while True:
-        on_greeting(channel)
+        await on_greeting(channel)
 
 # 起動時
 f = open("./../data/data.yml", "r")
