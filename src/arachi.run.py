@@ -2,6 +2,8 @@ import discord
 import random
 from discord.ext import commands
 from discord.ext.commands import CommandNotFound
+import asyncio
+import time
 import yaml
 
 client = commands.Bot('!!')
@@ -84,6 +86,12 @@ async def on_message(message):
     if message.content.startswith('フルーツ'):
         fruit = ['りんご', 'バナナ', 'メロン','ぶどう']
         await message.channel.send(random.choice(fruit))
+
+    #アイコン確認
+    if message.content.startswith('!!avatar'):
+        embed = discord.Embed(title='Your Icon!',colour=0x2ea9ff)
+        embed.set_image(url=message.author.avater_url)
+        await message.channel.send(embed=embed)
 
     #メッセージ削除
     if message.content == ('!!delete.test'):
@@ -190,6 +198,26 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
+
+    with open(YML_DATA) as stream:
+        data = yaml.load(stream)
+        greeting = data["greeting"]
+
+    loop = asyncio.get_event_loop()
+    client.loop.create_task(greeting_schedule(client.get_channel(greeting),loop))
+
+#挨拶する関数
+async def on_greeting(channel):
+    embed = discord.Embed(title='6:00になりました'
+    ,description='おはようございます。\n今日も一日がんばりましょう！',colour=0x2ea9ff)
+    await channel.send(embed=embed)
+
+#挨拶を実行する
+@asyncio.coroutine
+async def greeting_schedule(channel,loop):
+    while True:
+        if time.strftime('%H:%M:%S',time.localtime())=='6:00:00':
+            await on_greeting(channel)
 
 # 起動時
 f = open("./../data/data.yml", "r")
