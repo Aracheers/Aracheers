@@ -192,8 +192,13 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
+
+    with open(YML_DATA) as stream:
+        data = yaml.load(stream)
+        greeting = data["greeting"]
+
     loop = asyncio.get_event_loop()
-    client.loop.create_task(greeting_schedule(client.get_channel(507552110900936711),loop))
+    client.loop.create_task(greeting_schedule(client.get_channel(greeting),loop))
 
 # あいさつする関数
 async def on_greeting(channel):
