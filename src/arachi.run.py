@@ -195,11 +195,12 @@ async def on_ready():
 
 # あいさつする関数
 async def on_greeting(channel):
-    embed = discord.Embed(title='おはようございます。',colour=0x2ea9ff)
-    await channel.send(embed=embed)
-    return
+    #embed = discord.Embed(title='おはようございます。',colour=0x2ea9ff)
+    #await channel.send(embed=embed)
+    print('おはようございます\n')
 
 # 挨拶を実行する
+@asyncio.coroutine
 async def greeting_schedule(channel):
     while True:
         on_greeting(channel)
