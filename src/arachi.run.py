@@ -3,6 +3,7 @@ import random
 from discord.ext import commands
 from discord.ext.commands import CommandNotFound
 import asyncio
+import time
 import yaml
 
 client = commands.Bot('!!')
@@ -196,15 +197,15 @@ async def on_ready():
 
 # あいさつする関数
 async def on_greeting(channel):
-    #embed = discord.Embed(title='おはようございます。',colour=0x2ea9ff)
-    #await channel.send(embed=embed)
-    print('おはようございます\n')
+    embed = discord.Embed(title='おはようございます。',colour=0x2ea9ff)
+    await channel.send(embed=embed)
 
 # 挨拶を実行する
 @asyncio.coroutine
 async def greeting_schedule(channel, loop):
     while True:
-        await on_greeting(channel)
+        if time.strftime('%H:%M:%S',time.localtime())=='6:00:00':
+            await on_greeting(channel)
 
 # 起動時
 f = open("./../data/data.yml", "r")
