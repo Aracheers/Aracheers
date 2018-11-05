@@ -208,7 +208,8 @@ async def on_ready():
 
 # あいさつする関数
 async def on_greeting(channel):
-    embed = discord.Embed(title='おはようございます。',colour=0x2ea9ff)
+    embed = discord.Embed(title='6:00になりました',
+    description='おはようございます。\n今日も一日がんばりましょう！',colour=0x2ea9ff)
     await channel.send(embed=embed)
 
 # 挨拶を実行する
