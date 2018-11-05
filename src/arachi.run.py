@@ -90,7 +90,7 @@ async def on_message(message):
     #アイコン確認
     if message.content.startswith('!!avatar'):
         embed = discord.Embed(title='Your Icon!',colour=0x2ea9ff)
-        embed.set_image(url=message.author.avater_url)
+        embed.set_image(url=message.author.avatar_url)
         await message.channel.send(embed=embed)
 
     #メッセージ削除
