@@ -87,12 +87,6 @@ async def on_message(message):
         fruit = ['りんご', 'バナナ', 'メロン','ぶどう']
         await message.channel.send(random.choice(fruit))
 
-    #アイコン確認
-    if message.content.startswith('!!avatar'):
-        embed = discord.Embed(title='Your Icon!',colour=0x2ea9ff)
-        embed.set_image(url=message.author.avater_url)
-        await message.channel.send(embed=embed)
-
     #メッセージ削除
     if message.content == ('!!delete.test'):
         await message.delete()
