@@ -49,12 +49,12 @@ async def on_message(message):
         embed = discord.Embed(title='**Help Menu**',
         description='全体でコマンド改良中\n基本的な会話、挨拶に反応します。\nPrefixは**!!**に設定されています。',colour=0x2ea9ff)
         embed.add_field(name='Commands',
-        value='**!!invite**で招待リンクを所得出来ます。\n**!!server**でサーバー情報を取得できます。\n挨拶に反応します。話しかけてみて下さい！')
+        value='!!invite\n!!update\n!!avator\n!!userinfo\n!!server\nその他、挨拶に反応します。')
         await message.channel.send(embed=embed)
 
     #更新情報表示
     if message.content.startswith('!!update'):
-        embed = discord.Embed(title='**Recent Updates**',description='CommandBot化しました。\n24H起動の準備中です。',colour=0x2ea9ff)
+        embed = discord.Embed(title='**Recent Updates**',description='コマンド追加\npyYAML使用開始',colour=0x2ea9ff)
         embed.add_field(name='version',value='α版(試験運用段階)')
         await message.channel.send(embed=embed)
 
@@ -88,9 +88,10 @@ async def on_message(message):
         await message.channel.send(random.choice(fruit))
 
     #アイコン確認
-    if message.content.startswith('!!avatar'):
-        embed = discord.Embed(title='Your Icon!',colour=0x2ea9ff)
-        embed.set_image(url=message.author.avatar_url)
+    if message.content.startswith('!!avator'):
+        embed = discord.Embed(title='Your Icon!',
+        description='※画像をクリックすると拡大して表示されます。',colour=0x2ea9ff)
+        embed.set_thumbnail(url=message.author.avotar_url)
         await message.channel.send(embed=embed)
 
     #メッセージ削除
