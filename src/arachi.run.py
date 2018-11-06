@@ -88,10 +88,10 @@ async def on_message(message):
         await message.channel.send(random.choice(fruit))
 
     #アイコン確認
-    if message.content.startswith('!!avator'):
+    if message.content.startswith('!!avatar'):
         embed = discord.Embed(title='Your Icon!',
         description='※画像をクリックすると拡大して表示されます。',colour=0x2ea9ff)
-        embed.set_thumbnail(url=message.author.avotar_url)
+        embed.set_thumbnail(url=message.author.avatar_url)
         await message.channel.send(embed=embed)
 
     #メッセージ削除
