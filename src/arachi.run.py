@@ -87,6 +87,12 @@ async def on_message(message):
         fruit = ['りんご', 'バナナ', 'メロン','ぶどう']
         await message.channel.send(random.choice(fruit))
 
+    #アイコン確認
+    if message.content.startswith('!!avatar'):
+        embed = discord.Embed(title='Your Icon!',colour=0x2ea9ff)
+        embed.set_image(url=message.author.avatar_url)
+        await message.channel.send(embed=embed)
+
     #メッセージ削除
     if message.content == ('!!delete.test'):
         await message.delete()
@@ -202,7 +208,8 @@ async def on_ready():
 
 # あいさつする関数
 async def on_greeting(channel):
-    embed = discord.Embed(title='おはようございます。',colour=0x2ea9ff)
+    embed = discord.Embed(title='6:00になりました',
+    description='おはようございます。\n今日も一日がんばりましょう！',colour=0x2ea9ff)
     await channel.send(embed=embed)
 
 # 挨拶を実行する
